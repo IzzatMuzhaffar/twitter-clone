@@ -1,16 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
-import { collection, getDocs } from "firebase/firestore"
-import { jwtDecode } from "jwt-decode"
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 
 // action/message fetchPostsByUser
 export const fetchPostsByUser = createAsyncThunk(
     "posts/fetchByUser",
-    async () => {
+    async (userId) => {
         try {
-            const postsRef = collection(db, `/users/XeomRc7lYEY2jmROOKKqzbjnKOv2/posts`)
-            console.log("postsRef")
+            const postsRef = collection(db, `/users/${userId}/posts`)
+            console.log(postsRef)
             // const postsRef = collection(db, `/users/123/posts`)
 
             const querySnapshot = await getDocs(postsRef)
@@ -41,24 +39,74 @@ export const fetchPostsByUser = createAsyncThunk(
 // action/message savePost
 export const savePost = createAsyncThunk(
     "posts/savePost",
-    async (postContent) => {
-        // Get stored JWT token
-        const token = localStorage.getItem('authToken')
+    async ({ userId, postContent }) => {
+        try {
+            const postsRef = collection(db, `/users/${userId}/posts`)
+            console.log(`/users/${userId}/posts`)
+            // Since no ID is given, Firestore will auto generate a unique ID for this new document
+            const newPostRef = doc(postsRef)
+            console.log(postContent)
+            await setDoc(newPostRef, { content: postContent, likes: [] })
+            const newPost = await getDoc(newPostRef)
 
-        // Decode the token to fetch user id
-        const decodedToken = jwtDecode(token)
-        const userId = decodedToken.id // ".id" refer to table header in server
+            const post = {
+                id: newPost.id,
+                ...newPost.data()
+            }
 
-        // Prepare data to be sent
-        const data = {
-            title: "Post Title",
-            content: postContent,
-            user_id: userId,
+            return post
+        } catch (error) {
+            console.error(error)
+            throw error
         }
+    }
+)
 
-        // Make your API call here
-        const response = await axios.post(`${BASE_URL}/posts`, data)
-        return response.data
+// action likePost
+export const likePost = createAsyncThunk(
+    "posts/likePost",
+    async ({ userId, postId }) => {
+        try {
+            const postRef = doc(db, `/users/${userId}/posts/${postId}`)
+
+            const docSnap = await getDoc(postRef)
+
+            if (docSnap.exists()) {
+                const postData = docSnap.data()
+                const likes = [...postData.likes, userId]
+
+                await setDoc(postRef, { ...postData, likes })
+            }
+
+            return { userId, postId }
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
+    }
+)
+
+// action removeLikeFromPost
+export const removeLikeFromPost = createAsyncThunk(
+    "posts/removeLikeFromPost",
+    async ({ userId, postId }) => {
+        try {
+            const postRef = doc(db, `/users/${userId}/posts/${postId}`)
+
+            const docSnap = await getDoc(postRef)
+
+            if (docSnap.exists()) {
+                const postData = docSnap.data()
+                const likes = postData.likes.filter((id) => id !== userId)
+
+                await setDoc(postRef, { ...postData, likes })
+            }
+
+            return { userId, postId }
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
     }
 )
 
@@ -68,16 +116,17 @@ const postsSlice = createSlice({
     initialState: { posts: [], loading: true },
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(fetchPostsByUser.fulfilled, (state, action) => {
-            // action.payload comes from the output of fetchPostByUser async thunk
-            // action.payload = [{id: 1, content: "when is lunch"}]
-            state.posts = action.payload
-            // state.posts = []
-            // state.posts is the current posts that you are showing
-            // state.posts = [{id: 1, content: "when is lunch"}]
-            state.loading = false // to stop the loading animation
-        }),
-            builder.addCase(savePost.fulfilled, (state, action) => {
+        builder
+            .addCase(fetchPostsByUser.fulfilled, (state, action) => {
+                // action.payload comes from the output of fetchPostByUser async thunk
+                // action.payload = [{id: 1, content: "when is lunch"}]
+                state.posts = action.payload
+                // state.posts = []
+                // state.posts is the current posts that you are showing
+                // state.posts = [{id: 1, content: "when is lunch"}]
+                state.loading = false // to stop the loading animation
+            })
+            .addCase(savePost.fulfilled, (state, action) => {
                 state.posts = [action.payload, ...state.posts]
                 // action.payload comes from the output of savePost async thunk
                 // action.payload = [{id: 1, content: "when is lunch"}]
@@ -88,6 +137,26 @@ const postsSlice = createSlice({
                 // state.posts = [action.payload, ...state.posts]
                 // state.posts = [{id: 8, content: "when is lunch"}, ...state.posts]
                 // state.posts = [{id: 8, content: "when is lunch"}, {id: 7, content: "when is dinner"}, , {id: 6, content: "when is breakfast"}]
+            })
+            .addCase(likePost.fulfilled, (state, action) => {
+                const { userId, postId } = action.payload
+
+                const postIndex = state.posts.findIndex((post) => post.id === postId)
+
+                if (postIndex !== -1) {
+                    state.posts[postIndex].likes.push(userId)
+                }
+            })
+            .addCase(removeLikeFromPost.fulfilled, (state, action) => {
+                const { userId, postId } = action.payload
+
+                const postIndex = state.posts.findIndex((post) => post.id === postId)
+
+                if (postIndex !== -1) {
+                    state.posts[postIndex].likes = state.posts[postIndex].likes.filter(
+                        (id) => id !== userId
+                    )
+                }
             })
     }
 })

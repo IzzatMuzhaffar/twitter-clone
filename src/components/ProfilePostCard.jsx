@@ -1,54 +1,33 @@
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Col, Image, Row } from "react-bootstrap";
-import { fetchPostsByUser } from "../features/posts/postsSlice";
+import { likePost, removeLikeFromPost } from "../features/posts/postsSlice";
+import { useDispatch } from "react-redux";
+import { AuthContext } from "./AuthProvider";
 
-export default function ProfilePostCard({ content }) {
-    const [likes, setLikes] = useState([])
+export default function ProfilePostCard({ post }) {
+    const { content, id: postId } = post
+    const [likes, setLikes] = useState(post.likes || [])
+    const dispatch = useDispatch()
+    const { currentUser } = useContext(AuthContext)
+    const userId = currentUser.uid
 
-    // Decoding to get the userId
-    const token = localStorage.getItem("authToken")
-    const decode = jwtDecode(token)
-    const userId = decode.id
+    // user has liked the post if their id is in the likes array
+    const isLiked = likes.includes(userId)
 
     const pic = "https://pbs.twimg.com/profile_images/1587405892437221376/h167Jlb2_400x400.jpg";
-    // const BASE_URL = 'https://6e7d3ebb-8eaf-417a-9235-09e7f854480e-00-13x4y2t148028.pike.repl.co'
-
-    useEffect(() => {
-
-        // fetch(`${BASE_URL}/likes/post/${postId}`)
-        // .then((response) => response.json())
-        // .then((data) => setLikes(data))
-        // .catch((error) => console.error("Error: ", error))
-    }, [])
-
-    const isLiked = likes.some((like) => like.user_id === userId)
 
     const handleLike = () => (isLiked ? removeFromLikes() : addToLikes())
 
+    // add userID to likes array
     const addToLikes = () => {
-        // axios.post(`${BASE_URL}/likes`, {
-        //     user_id: userId,
-        //     post_id: postId,
-        // })
-        //     .then((response) => {
-        //         setLikes([...likes, { ...response.data, likes_id: response.data.id }])
-        //     })
-        //     .catch((error) => console.error("Error:", error))
+        setLikes([...likes, userId])
+        dispatch(likePost({ userId, postId }))
     }
 
+    // remove userID from likes array and update the backend
     const removeFromLikes = () => {
-        // const like = likes.find((like) => like.user_id === userId)
-        // if (like) {
-        //     axios
-        //         .put(`${BASE_URL}/likes/${userId}/${postId}`) // Include userId and postId in the URL
-        //         .then(() => {
-        //             // Update the state to reflect the removal of the like
-        //             setLikes(likes.filter((likeItem) => likeItem.user_id !== userId))
-        //         })
-        //         .catch((error) => console.error("Error:", error))
-        // }
+        setLikes([likes.filter((id) => id !== userId)])
+        dispatch(removeLikeFromPost({ userId, postId }))
     }
 
     return (
