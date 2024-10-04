@@ -12,14 +12,15 @@ export default function ProfileMidBody() {
     const posts = useSelector(store => store.posts.posts)
     const loading = useSelector(store => store.posts.loading)
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem('authToken')
-    //     if (token) {
-    //         const decodedToken = jwtDecode(token)
-    //         const userId = decodedToken.id
-    //         dispatch(fetchPostsByUser(userId))
-    //     }
-    // }, [dispatch])
+    useEffect(() => {
+        fetchPostsByUser()
+        // const token = localStorage.getItem('authToken')
+        // if (token) {
+        //     const decodedToken = jwtDecode(token)
+        //     const userId = decodedToken.id
+        //     dispatch(fetchPostsByUser(userId))
+        // }
+    }, [])
 
     return (
         <Col sm={6} className="bg-light" style={{ border: "1px solid lightgrey" }}>

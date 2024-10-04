@@ -1,16 +1,40 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
+import { collection, getDocs } from "firebase/firestore"
 import { jwtDecode } from "jwt-decode"
-
-const BASE_URL = 'https://6e7d3ebb-8eaf-417a-9235-09e7f854480e-00-13x4y2t148028.pike.repl.co'
+import { db } from "../../firebase"
 
 // action/message fetchPostsByUser
 export const fetchPostsByUser = createAsyncThunk(
     "posts/fetchByUser",
-    async (userId) => {
-        const response = await fetch(`${BASE_URL}/posts/users/${userId}`)
-        return response.json() // this is the action in the addCase
-        // return [{id: 1, content: "when is lunch"}]
+    async () => {
+        try {
+            const postsRef = collection(db, `/users/XeomRc7lYEY2jmROOKKqzbjnKOv2/posts`)
+            console.log("postsRef")
+            // const postsRef = collection(db, `/users/123/posts`)
+
+            const querySnapshot = await getDocs(postsRef)
+            const docs = querySnapshot.docs.map(doc => ({
+                // doc = {
+                //  id: 123,
+                //  data() => {content: "hello from firebase"}
+                // }
+
+                id: doc.id,
+                // id: 123
+                // 
+                ...doc.data()
+                // ...{content: "hello from firebase"}
+                // 
+                // last becomes:
+                // doc = {id: 123, content: "hello from firebase"}
+
+            }))
+            return docs
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
     }
 )
 
