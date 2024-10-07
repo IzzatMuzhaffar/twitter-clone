@@ -4,6 +4,7 @@ import { likePost, removeLikeFromPost } from "../features/posts/postsSlice";
 import { useDispatch } from "react-redux";
 import { AuthContext } from "./AuthProvider";
 import UpdatePostModal from "./UpdatePostModal";
+import DeletePostModal from "./DeletePostModal";
 
 export default function ProfilePostCard({ post }) {
     const { content, id: postId, imageUrl } = post
@@ -20,6 +21,10 @@ export default function ProfilePostCard({ post }) {
     const [showUpdateModal, setShowUpdateModal] = useState(false)
     const handleShowUpdateModal = () => setShowUpdateModal(true)
     const handleCloseUpdateModal = () => setShowUpdateModal(false)
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const handleShowDeleteModal = () => setShowDeleteModal(true)
+    const handleCloseDeleteModal = () => setShowDeleteModal(false)
 
     const handleLike = () => (isLiked ? removeFromLikes() : addToLikes())
 
@@ -78,7 +83,7 @@ export default function ProfilePostCard({ post }) {
                             onClick={handleShowUpdateModal}
                         ></i>
                     </Button>
-                    <Button variant="light">
+                    <Button variant="light" onClick={handleShowDeleteModal}>
                         <i className="bi bi-trash"></i>
                     </Button>
                     <UpdatePostModal
@@ -86,6 +91,11 @@ export default function ProfilePostCard({ post }) {
                         handleClose={handleCloseUpdateModal}
                         postId={postId}
                         originalPostContent={content}
+                    />
+                    <DeletePostModal
+                        show={showDeleteModal}
+                        handleClose={handleCloseDeleteModal}
+                        postId={postId}
                     />
                 </div>
             </Col>

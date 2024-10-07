@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore"
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore"
 import { db, storage } from "../../firebase"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 
@@ -104,6 +104,24 @@ export const updatePost = createAsyncThunk(
                 throw new Error("post doesn't exist")
             }
 
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
+    }
+)
+
+// action/message deletePost
+export const deletePost = createAsyncThunk(
+    "posts/deletePost",
+    async ({ userId, postId }) => {
+        try {
+            // reference to the post
+            const postRef = doc(db, `users/${userId}/posts/${postId}`)
+            // delete the post
+            await deleteDoc(postRef)
+            // return the ID of the deleted post
+            return postId
         } catch (error) {
             console.error(error)
             throw error
@@ -234,6 +252,11 @@ const postsSlice = createSlice({
                 //  {id: 1, content: "goodbye", imageUrl: "image.com/2"},
                 //  {id: 2, content: "haris", imageUrl: "image.com/108"}
                 // ]                
+            })
+            .addCase(deletePost.fulfilled, (state, action) => {
+                const deletedPostId = action.payload
+                // filter out the deleted post from the state
+                state.posts = state.posts.filter((post) => post.id !== deletedPostId)
             })
     }
 })
