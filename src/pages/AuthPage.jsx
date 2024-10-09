@@ -2,15 +2,15 @@ import axios from 'axios'
 import {
     createUserWithEmailAndPassword,
     getAuth,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup
 } from "firebase/auth"
 import { useContext, useEffect, useState } from 'react'
 import { Button, Col, Form, Image, Modal, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import useLocalStorage from 'use-local-storage'
 import { AuthContext } from '../components/AuthProvider'
-
-
 
 export default function AuthPage() {
     const loginImage = 'https://sig1.co/img-twitter-1'
@@ -54,6 +54,17 @@ export default function AuthPage() {
             console.error(error)
         }
     }
+
+    const provider = new GoogleAuthProvider()
+    const handleGoogleLogin = async (e) => {
+        e.preventDefault()
+        try {
+            await signInWithPopup(auth, provider)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const handleClose = () => setModalShow(null)
 
     return (
@@ -67,7 +78,11 @@ export default function AuthPage() {
                 <h2 className='mt-5' style={{ fontSize: 31 }}>Join Twitter Today</h2>
 
                 <Col sm={5} className='d-grid gap-2'>
-                    <Button className='rounded-pill' variant='outline-dark'>
+                    <Button
+                        className='rounded-pill'
+                        variant='outline-dark'
+                        onClick={handleGoogleLogin}
+                    >
                         <i className='bi bi-google'></i> Sign up with Google
                     </Button>
                     <Button className='rounded-pill' variant='outline-dark'>
