@@ -8,12 +8,12 @@ export const fetchPostsByUser = createAsyncThunk(
     "posts/fetchByUser",
     async (userId) => {
         try {
-            const postsRef = collection(db, `/users/${userId}/posts`)
-            console.log(postsRef)
+            const postsRef = collection(db, `/users/${userId}/posts`);
+            console.log(postsRef);
             // const postsRef = collection(db, `/users/123/posts`)
 
-            const querySnapshot = await getDocs(postsRef)
-            const docs = querySnapshot.docs.map(doc => ({
+            const querySnapshot = await getDocs(postsRef);
+            const docs = querySnapshot.docs.map((doc) => ({
                 // doc = {
                 //  id: 123,
                 //  data() => {content: "hello from firebase"}
@@ -22,17 +22,17 @@ export const fetchPostsByUser = createAsyncThunk(
                 id: doc.id,
                 // id: 123
                 // 
-                ...doc.data()
+                ...doc.data(),
                 // ...{content: "hello from firebase"}
                 // 
                 // last becomes:
                 // doc = {id: 123, content: "hello from firebase"}
 
-            }))
-            return docs
+            }));
+            return docs;
         } catch (error) {
-            console.error(error)
-            throw error
+            console.error(error);
+            throw error;
         }
     }
 )
