@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "twitter-clone-b1aa3",
+  "private_key_id": "87d79007cf0205da6bc9707c00d3d86391386cfc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkp7E/JLe7zFlI\nAho6WR1bZS6j0Jq6nFPxlmGxUr7vw5L9pN4FsMm33W5bgF1sRW5waNkgrKe1+3aU\naXK67q+D/0PLxNjozS96Zg7MRpZd1yDtioag6VcaOarkfuMSoYkoZOt1JXsSZ8pW\nmf/Wwoz1qayxfz3EJ58s/AmsEVqXszAn5c8UtmEIll35S4Uf8BH5cpooRS0nMx8t\n4jniQ2IROcAz0v+iWJDPOSPLL/Tnf7xEphVMoLXJBF3A+vePTuq6bIWg2nfPTUUh\nWGZ8RQ8BVF1YDIH2GCzcR3JXKN61VH0QVcUKNjSAZPGKb4KQJLCRLQ2icixZXB4E\n9jjqJatvAgMBAAECggEADa5L8TiBIP7UVuyrITimUncQbla22dUuDwoKXqFxcUU0\nFr8hc3eXoHSq5roTs8X7wdCfDzKep2WYGgdo8P9EC25PmRlnVxs1XAYpf0TzhCM2\nfoY0CXVZ4g6d6b5hP6W3BRQy5tjmZkZuxCNSOUCRAG3IsOF8UFVlHxJnUKoLIkTZ\nwnUgTw0RQz5R2DTP7KXCKooue34GLCqrnHwdytL7TkveaAHXDgT/0EQUQcEYP2c0\nRh7WwOrh1uEFSVmr9F9Yz+/sKcnbnrqpMNMPPkZ3zVGnJbshxr4AbIFwKAk16h22\nZJzQiLfMLs4Ogmo1f6YbhCGHyFB5oyVjEUEME5OCgQKBgQDOkP2pzFj/Kzkpw3+w\nlTjV0qdz8FfKPBznSn1vy///Hm6Yl9MvL7zFzjDhHUdSlARNMThoYTkU69NTt0e+\nLqKEjf8Jz02mUqNm/Tgy51Y7tZ/tqmN69qhOG9GZ4RwSG0PwMhlUN29GTA8MOyLV\n6XQ6da6xaEsizrb8QJQRF50yuwKBgQDMDw+hs41CAb1/X9t+uNWhLv0fbsBtOIYu\nhoJk9yLA6e5pnv8bLFZw/leH28rT8rlxdVG9er+BsK1VRay01LvThwie92DvrEIx\nWLSiF8xwlDldx6EnAPOrnAQrQnWz35ktOps6J2JoAHQcMs6vMk3mNLS2B13bPHY0\nAl9FsXSg3QKBgBBuTg8clxOs/34H8/c612uCtxksy/7lKzNmpHWpF3LWm9t9cCn3\ntR9S2GZ/qrWx2mm9eYwr95tnasbk9Er3cKv0k43XNIj/V8oQaFD8P8q+FruT6xfT\n2O1lnxWLZ201SAEqKwOc6TgBQs0pQwsa58jipYOtFRTutnV4OY7mfvWTAoGBAKwF\nxle61cpfTTCjzpX1m6JVym1FIFLy46s1GZej/1hB3QqNTuHJbtWylHejgklKxaow\nDMh/QhJCrtzD7+RBslWP8GSShtWFkgenkB9VkLMXQYUdVW1cEA8LZzhQvoj0Zl0K\nmvFbYknql/dtnW90KNd4dx889pJrVfpiRY6rGnbBAoGAZWEMS6Je7Xe+1J1w4Iun\nrofzh/EedXE5yOPNxbS5aY15/n+6WgidxD2/nlXUjv7J0QNV4LOg8fHBorfF/WMx\nIsN/yMWl9y9O+vUZBqUSvMrIIZ2qP+RTAFz+moDcc5QDvoIqnsA1bwMeCCiq/ppN\nB/Ap6J1PQvsyolAXdMPIEe4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "vercel-service-account@twitter-clone-b1aa3.iam.gserviceaccount.com",
+  "client_id": "105852225453623970189",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vercel-service-account%40twitter-clone-b1aa3.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
