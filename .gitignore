@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 .env
+
+vercel-service-account/twitter-clone-b1aa3-87d79007cf02.json
