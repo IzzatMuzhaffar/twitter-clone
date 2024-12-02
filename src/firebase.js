@@ -22,3 +22,12 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app)
 export const storage = getStorage(app)
+
+// Admin SDK Setup
+var admin = import("firebase-admin");
+
+var serviceAccount = import("../vercel-service-account/twitter-clone-b1aa3-87d79007cf02.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
