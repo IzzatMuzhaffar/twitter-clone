@@ -4,9 +4,11 @@ import ProfilePage from './pages/ProfilePage'
 import { Provider } from 'react-redux'
 import store from './store'
 import { AuthProvider } from './components/AuthProvider'
+import { initAdmin } from './firebaseAdmin'
 
 
-export default function App() {
+export default async function App() {
+  await initAdmin()
   return (
     <AuthProvider>
       <Provider store={store}>

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import {
     createUserWithEmailAndPassword,
     getAuth,
@@ -9,7 +8,6 @@ import {
 import { useContext, useEffect, useState } from 'react'
 import { Button, Col, Form, Image, Modal, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import useLocalStorage from 'use-local-storage'
 import { AuthContext } from '../components/AuthProvider'
 
 export default function AuthPage() {
